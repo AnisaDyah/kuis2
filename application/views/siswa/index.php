@@ -2,8 +2,25 @@
 
 <div class="container">
   <legend>Daftar Siswa</legend>
+  <div class="row">
+        <div class="col-md-8 col-md-offset-2 well">
+        <?php 
+        $attr = array("class" => "form-horizontal", "role" => "form", "id" => "form1", "name" => "form1");
+        echo form_open("siswa/search", $attr);?>
+            <div class="form-group">
+                <div class="col-md-6">
+                    <input class="form-control" id="nama" name="nama" placeholder="Search for Student Name..." type="text" value="<?php echo set_value('nama'); ?>" />
+                </div>
+                <div class="col-md-6">
+                    <input id="btn_search" name="btn_search" type="submit" class="btn btn-danger" value="Search" />
+                    <a href="<?php echo base_url(). "index.php/siswa/index"; ?>" class="btn btn-primary">Show All</a>
+                </div>
+            </div>
+        
+        </div>
+    </div>
   <div class="col-xs-12 col-sm-12 col-md-12">
-  <?php if (isset($siswa)) { ?>
+  <?php if (isset($namelist)) { ?>
     <table class="table table-striped">
       <thead>
         <th>No</th>
@@ -17,7 +34,7 @@
         </th>
       </thead>
       <tbody>
-        <?php $number = 1; foreach($siswa as $row) { ?>
+        <?php $number = 1; foreach($namelist as $row) { ?>
         <tr>
           <td>
             <a href="<?php echo site_url('siswa/show/'.$row->id) ?>">
