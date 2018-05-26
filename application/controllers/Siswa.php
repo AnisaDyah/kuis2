@@ -21,7 +21,7 @@ class Siswa extends CI_Controller {
                     $start = $this->uri->segment(3, 0);
         
                     $config = [
-                      'base_url' => base_url() . 'siswa/index',
+                      'base_url' => base_url() . 'index.php/siswa/index',
                       'total_rows' => $total,
                       'per_page' => $limit,
                      'uri_segment' => 3,
@@ -51,11 +51,13 @@ class Siswa extends CI_Controller {
         $this->load->model('siswa_model');
         $siswa= $this->siswa_model->list($limit,$start);
         $jenis_siswa = $this->siswa_model->jenis_siswa();
+        $data['page'] = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
   $data = [
     'title' => 'Pemrograman Web Framework :: Data siswa',
     'siswa' => $siswa,
     'jenis_siswa' => $jenis_siswa,
-    'links' => $this->pagination->create_links()
+    'links' => $this->pagination->create_links(),
+    'namelist' => $this->siswa_model->get_nama($config["per_page"], $data['page'], NULL)
   ];
 }
   $this->load->view('siswa/index', $data);
@@ -157,7 +159,54 @@ public function edit($id)
      
     }
 
+    public function search()
+    {
+        // get search string
+        $search = ($this->input->post("nama"))? $this->input->post("nama") : "NIL";
 
+        $search = ($this->uri->segment(3)) ? $this->uri->segment(3) : $search;
+
+        // pagination settings
+        $config = array();
+        $limit = 2;
+        $config['base_url'] = site_url("siswa/search/$search");
+        $config['total_rows'] = $this->siswa_model->get_nama_count($search);
+        $config['per_page'] = $limit;
+        $config["uri_segment"] = 4;
+        $choice = $config["total_rows"]/$config["per_page"];
+        $config["num_links"] = floor($choice);
+
+        // integrate bootstrap pagination
+        $config['full_tag_open'] = '<ul class="pagination">';
+        $config['full_tag_close'] = '</ul>';
+        $config['first_link'] = false;
+        $config['last_link'] = false;
+        $config['first_tag_open'] = '<li>';
+        $config['first_tag_close'] = '</li>';
+        $config['prev_link'] = 'Prev';
+        $config['prev_tag_open'] = '<li class="prev">';
+        $config['prev_tag_close'] = '</li>';
+        $config['next_link'] = 'Next';
+        $config['next_tag_open'] = '<li>';
+        $config['next_tag_close'] = '</li>';
+        $config['last_tag_open'] = '<li>';
+        $config['last_tag_close'] = '</li>';
+        $config['cur_tag_open'] = '<li class="active"><a href="#">';
+        $config['cur_tag_close'] = '</a></li>';
+        $config['num_tag_open'] = '<li>';
+        $config['num_tag_close'] = '</li>';
+        $this->pagination->initialize($config);
+
+        $data['jenis_siswa'] = $this->siswa_model->jenis_siswa();
+        $data['page'] = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        // get nama list
+        $data['namelist'] = $this->siswa_model->get_nama($config['per_page'], $data['page'], $search);
+
+        $data['links'] = $this->pagination->create_links();
+
+        //load view
+        $this->load->view('siswa/index',$data);
+    }
 
 }
 
