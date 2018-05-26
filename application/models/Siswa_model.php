@@ -60,7 +60,21 @@ public function getTotal()
   return $this->db->count_all('data_siswa');
 }
 
-
+function get_nama($limit, $start, $st = NULL)
+    {
+        if ($st == "NIL") $st = "";
+        $sql = "select * from data_siswa where nama like '%$st%' limit " . $start . ", " . $limit;
+        $query = $this->db->query($sql);
+        return $query->result();
+    }
+    
+    function get_nama_count($st = NULL)
+    {
+        if ($st == "NIL") $st = "";
+        $sql = "select * from data_siswa where nama like '%$st%'";
+        $query = $this->db->query($sql);
+        return $query->num_rows();
+    }
     
 
 
