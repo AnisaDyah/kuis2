@@ -5,10 +5,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Siswa_model extends CI_Model {
 
-    public function list()
+    public function list($limit, $start)
 {
-  $query = $this->db->get('data_siswa');
-  return $query->result();
+  $query = $this->db->get('data_siswa',$limit, $start);
+  return ($query->num_rows() > 0) ? $query->result() : false;
 }
 
 public function insert($data = [])
@@ -53,6 +53,11 @@ public function delete($id)
 {
   $query = $this->db->get('jenis');
   return $query->result();
+}
+
+public function getTotal()
+{
+  return $this->db->count_all('data_siswa');
 }
 
 
