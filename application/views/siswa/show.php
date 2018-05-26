@@ -16,7 +16,7 @@
       <label for="nama">Jenis Siswa</label>
       <p>
       <?php foreach($jenis_siswa as $key){ 
-      	if($key->id_jenis == $data->id){
+      	if($key->id_jenis == $data->id_jenis){
       		echo $key->jenis_siswa;
       	}
 

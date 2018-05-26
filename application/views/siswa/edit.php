@@ -21,7 +21,7 @@
 
       <select name="id_jenis" class="form-control" required>
         <?php foreach($jenis_siswa as $key){ 
-        if($key->id_jenis == $data->id){ ?>
+        if($key->id_jenis == $data->id_jenis){ ?>
        
       <option selected> <?php echo $key->jenis_siswa ; ?></option>
       <?php } ?>
