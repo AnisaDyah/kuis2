@@ -3,6 +3,7 @@
 <div class="container">
   <legend>Daftar Siswa</legend>
   <div class="col-xs-12 col-sm-12 col-md-12">
+  <?php if (isset($siswa)) { ?>
     <table class="table table-striped">
       <thead>
         <th>No</th>
@@ -36,7 +37,7 @@
            <td>
             <a href="<?php echo site_url('siswa/show/'.$row->id) ?>">
               <?php foreach($jenis_siswa as $key){ 
-        if($key->id_jenis == $row->id){
+        if($key->id_jenis == $row->id_jenis){
           echo $key->jenis_siswa;
         }
 
@@ -55,6 +56,10 @@
         <?php } ?>
       </tbody>
     </table>
+    <?php echo $links ?>
+  <?php } else { ?>
+  <div>Tidak ada data</div>
+  <?php } ?>
   </div>
 </div>
 
